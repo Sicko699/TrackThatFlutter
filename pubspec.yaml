@@ -19,8 +19,8 @@ dependencies:
   auto_route: ^10.1.0+1
   intl: ^0.20.2
   firebase_core: ^3.15.2
-  firebase_auth: ^5.8.0
-  cloud_firestore: ^5.13.0
+  firebase_auth: ^5.7.0
+  cloud_firestore: ^5.6.12
 
 dev_dependencies:
   flutter_test:
