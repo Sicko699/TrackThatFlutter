@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:track_that_flutter/theme/AppTextStyles.dart';
 import 'package:track_that_flutter/theme/ColorPalette.dart';
+import 'package:track_that_flutter/theme/Dimensions.dart';
 
 
 class AppTheme {

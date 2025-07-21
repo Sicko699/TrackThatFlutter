@@ -1,4 +1,8 @@
+
+
 // Configurazione Firebase
+import 'package:firebase_core/firebase_core.dart';
+
 class FirebaseConfig {
   static String get apiKey => 'YOUR_API_KEY';
   static String get authDomain => 'YOUR_AUTH_DOMAIN';
@@ -17,6 +21,6 @@ class FirebaseConfig {
       };
 
   static Future<void> init() async {
-    // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   }
 }
