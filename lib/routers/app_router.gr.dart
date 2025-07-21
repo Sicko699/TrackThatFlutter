@@ -11,57 +11,6 @@
 part of 'app_router.dart';
 
 /// generated route for
-/// [ExampleDetailPage]
-class ExampleDetailRoute extends PageRouteInfo<ExampleDetailRouteArgs> {
-  ExampleDetailRoute({
-    required String id,
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          ExampleDetailRoute.name,
-          args: ExampleDetailRouteArgs(id: id, key: key),
-          rawPathParams: {'id': id},
-          initialChildren: children,
-        );
-
-  static const String name = 'ExampleDetailRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final pathParams = data.inheritedPathParams;
-      final args = data.argsAs<ExampleDetailRouteArgs>(
-        orElse: () => ExampleDetailRouteArgs(id: pathParams.getString('id')),
-      );
-      return ExampleDetailPage(id: args.id, key: args.key);
-    },
-  );
-}
-
-class ExampleDetailRouteArgs {
-  const ExampleDetailRouteArgs({required this.id, this.key});
-
-  final String id;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'ExampleDetailRouteArgs{id: $id, key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ExampleDetailRouteArgs) return false;
-    return id == other.id && key == other.key;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ key.hashCode;
-}
-
-/// generated route for
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
@@ -73,6 +22,38 @@ class HomeRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const HomePage();
+    },
+  );
+}
+
+/// generated route for
+/// [LoginPage]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+      : super(LoginRoute.name, initialChildren: children);
+
+  static const String name = 'LoginRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LoginPage();
+    },
+  );
+}
+
+/// generated route for
+/// [WelcomePage]
+class WelcomeRoute extends PageRouteInfo<void> {
+  const WelcomeRoute({List<PageRouteInfo>? children})
+      : super(WelcomeRoute.name, initialChildren: children);
+
+  static const String name = 'WelcomeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const WelcomePage();
     },
   );
 }

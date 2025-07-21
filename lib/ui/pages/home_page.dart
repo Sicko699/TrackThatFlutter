@@ -64,9 +64,9 @@ class _HomePageState extends State<HomePage> {
           Text(
             'Pine Architecture Skeleton',
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: ColorPalette.primary,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: ColorPalette.primary,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -153,8 +153,8 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 Text(
                   description,
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                context.router.push(ExampleDetailRoute(id: '123'));
+                context.router.push(const LoginRoute());
               },
               icon: const Icon(Icons.arrow_forward),
               label: const Text('Navigate to Detail'),

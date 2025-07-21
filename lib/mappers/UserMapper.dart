@@ -1,12 +1,11 @@
-
 import 'package:track_that_flutter/mappers/mappers.dart';
 import 'package:track_that_flutter/model/entities/user.dart';
 import 'package:track_that_flutter/network/dto/UserDto.dart';
 
-class Usermapper implements DTOMapper<UserDTO, User>{
+class Usermapper implements DTOMapper<UserDTO, UserModel> {
   @override
-  User fromDTO(UserDTO dto) {
-    return User(
+  UserModel fromDTO(UserDTO dto) {
+    return UserModel(
       id: dto.id,
       name: dto.name,
       email: dto.email,
@@ -14,12 +13,11 @@ class Usermapper implements DTOMapper<UserDTO, User>{
   }
 
   @override
-  UserDTO toDTO(User model) {
+  UserDTO toDTO(UserModel model) {
     return UserDTO(
       id: model.id,
       name: model.name,
       email: model.email,
     );
   }
-
 }
