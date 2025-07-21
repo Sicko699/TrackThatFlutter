@@ -14,3 +14,11 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Firebase setup
+
+This project includes basic Firebase configuration. Update the generated
+`lib/firebase_options.dart` file with your own project credentials or run
+`flutterfire configure` to create it automatically. Google service files for
+Android and iOS are already present in `android/app/google-services.json` and
+`ios/Runner/GoogleService-Info.plist`.
