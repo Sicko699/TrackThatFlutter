@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:TrackThatFlutter/routers/app_router.dart';
-import 'package:TrackThatFlutter/theme/ColorPalette.dart';
-import 'package:TrackThatFlutter/theme/Dimensions.dart';
+import 'package:track_that_flutter/routers/app_router.dart';
+import 'package:track_that_flutter/theme/ColorPalette.dart';
+import 'package:track_that_flutter/theme/Dimensions.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:TrackThatFlutter/theme/ColorPalette.dart';
-import 'package:TrackThatFlutter/theme/Dimensions.dart';
+import 'package:track_that_flutter/theme/ColorPalette.dart';
+import 'package:track_that_flutter/theme/Dimensions.dart';
 
 @RoutePage()
 class ExampleDetailPage extends StatelessWidget {
