@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:TrackThatFlutter/routers/auth_guard.dart';
-import 'package:TrackThatFlutter/ui/pages/detail_page.dart';
-import 'package:TrackThatFlutter/ui/pages/home_page.dart';
+import 'package:track_that_flutter/routers/auth_guard.dart';
+import 'package:track_that_flutter/ui/pages/detail_page.dart';
+import 'package:track_that_flutter/ui/pages/home_page.dart';
 
 part 'app_router.gr.dart';
 
