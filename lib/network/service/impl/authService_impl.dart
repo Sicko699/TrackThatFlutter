@@ -2,6 +2,7 @@ import 'package:track_that_flutter/network/dto/UserDto.dart';
 import 'package:track_that_flutter/network/firebase_service.dart';
 import 'package:track_that_flutter/network/service/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class AuthserviceImpl implements Authservice {
   final FirebaseService _firebaseService;
@@ -10,22 +11,46 @@ class AuthserviceImpl implements Authservice {
 
   @override
   Future<UserDTO> login(String email, String password) async {
+    // Fetch user information along with authentication
     Map<String, dynamic>? userData = await _firebaseService
         .loginAndFetchUserData(email: email, password: password);
 
     if (userData == null) {
-      throw Exception("Login failed");
+      // Bubble up a clear exception if no data is returned
+      throw Exception('Login failed');
     }
 
-    UserDTO userDto = UserDTO(
-      email: email,
-      id: userData['uid'],
-      firstName: userData['firstName'],
-      lastName: userData['lastName'],
-      dateOfBirth: (userData['dateOfBirth'] as Timestamp).toDate(),
-    );
+    // Support legacy field names that might differ from the ones
+    // used when creating new users via [registerUser].
+    final firstName =
+        userData['firstName'] ?? userData['nome'] ?? userData['Name'];
+    final lastName =
+        userData['lastName'] ?? userData['cognome'] ?? userData['Surname'];
+    final rawDob =
+        userData['dateOfBirth'] ?? userData['dataDiNascita'] ?? userData['dob'];
 
-    return userDto;
+    DateTime dateOfBirth;
+    if (rawDob is Timestamp) {
+      dateOfBirth = rawDob.toDate();
+    } else if (rawDob is String) {
+      // Handle both ISO-8601 and dd/MM/yyyy formats.
+      dateOfBirth = DateTime.tryParse(rawDob) ??
+          DateFormat('dd/MM/yyyy').parse(rawDob);
+    } else if (rawDob is DateTime) {
+      dateOfBirth = rawDob;
+    } else {
+      throw Exception('Invalid date of birth');
+    }
+
+    final id = userData['uid'] ?? userData['id'];
+
+    return UserDTO(
+      email: userData['email'] ?? email,
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+    );
   }
 
   @override
