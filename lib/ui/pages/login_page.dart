@@ -48,8 +48,10 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocConsumer<LoginCubit, LoginCubitState>(
           listener: (context, state) {
             if (state is LoginSuccessState) {
-              context.read<AuthCubit>().checkAuthStatus();
-              context.router.push(const WelcomeRoute());
+              // Update the global auth state with the logged in user
+              context.read<AuthCubit>().setAuthenticatedUser(state.user);
+              // Replace the stack so the user can't navigate back to login
+              context.router.replaceAll([const WelcomeRoute()]);
             } else if (state is LoginErrorState) {
               // Show an error message if login fails
               ScaffoldMessenger.of(context).showSnackBar(

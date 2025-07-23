@@ -67,9 +67,10 @@ class _RegisterPageState extends State<RegisterPage> {
         child: BlocConsumer<RegisterCubit, RegisterCubitState>(
           listener: (context, state) {
             if (state is RegisterSuccessState) {
-              context.read<AuthCubit>().checkAuthStatus();
-              context.router.push(const WelcomeRoute());
+              // Persist authenticated user and navigate away from the form
+              context.read<AuthCubit>().setAuthenticatedUser(state.user);
               context.read<LoginCubit>().updateUser(state.user);
+              context.router.replaceAll([const WelcomeRoute()]);
             } else if (state is RegisterErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
