@@ -9,14 +9,13 @@ class RegisterCubit extends Cubit<RegisterCubitState>{
   RegisterCubit({required this.authRepository}) : super(RegisterInitialState());
 
   void register(String name, String email, String password) async {
-    emit(RegisterLoadingState());
+  emit(RegisterLoadingState());
 
-    try {
-      authRepository.register(name, email, password).then((user) {
-        emit(RegisterSuccessState('Registration successful', user));
-      });
-    } catch (e) {
-      emit(RegisterErrorState('Registration failed'));
+  try {
+    final user = await authRepository.register(name, email, password);
+    emit(RegisterSuccessState('Registration successful', user));
+  } catch (e) {
+    emit(RegisterErrorState('Registration failed'));
     }
   }
 }
