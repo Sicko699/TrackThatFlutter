@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:track_that_flutter/state_management/cubits/first_cubit/login_cubit.dart';
-import 'package:track_that_flutter/state_management/cubits/first_cubit/login_cubit_state.dart';
+import 'package:track_that_flutter/state_management/cubits/auth/auth_cubit.dart';
 
 @RoutePage()
 class WelcomePage extends StatelessWidget {
@@ -10,30 +9,32 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginCubitState>(
-      builder: (BuildContext context, state) {
-        if (state is LoginSuccessState) {
-          final userName = state.user.name;
-
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        if (state is AuthLoading || state is AuthInitial) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is AuthAuthenticated) {
+          final user = state.user;
           return Scaffold(
             appBar: AppBar(
-              title: Text(userName),
+              title: Text(user.name),
             ),
             body: Center(
               child: Text(
-                'Ciao, $userName!',
+                'Ciao, ${user.name}!',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
           );
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: Text('Utente non autenticato'),
+            ),
+          );
         }
-
-        // Stato di fallback
-        return const Scaffold(
-          body: Center(
-            child: Text('Utente non autenticato'),
-          ),
-        );
       },
     );
   }

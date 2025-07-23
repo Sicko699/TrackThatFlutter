@@ -11,4 +11,9 @@ final List<BlocProvider> blocs = [
       authRepository: context.read<AuthRepository<UserModel>>(),
     ),
   ),
+  BlocProvider<AuthCubit>(
+    create: (context) => AuthCubit(
+      authRepository: context.read<AuthRepository<UserModel>>(),
+    )..checkAuthStatus(),
+  ),
 ];

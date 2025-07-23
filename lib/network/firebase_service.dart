@@ -81,4 +81,22 @@ class FirebaseService {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>?> getCurrentUserData() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+    try {
+      final doc = await _firestore.collection('utenti').doc(user.uid).get();
+      if (doc.exists) {
+        return doc.data() as Map<String, dynamic>;
+      }
+    } catch (e) {
+      debugPrint('Errore nel recupero dell\'utente corrente: $e');
+    }
+    return null;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
 }
