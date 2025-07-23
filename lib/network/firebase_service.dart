@@ -6,6 +6,20 @@ class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
+
+  Future<Map<String, dynamic>?> getCurrentUserData() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+    final userDoc = await _firestore.collection('utenti').doc(user.uid).get();
+    if (userDoc.exists) {
+      return userDoc.data() as Map<String, dynamic>;
+    }
+    return null;
+  }
+
   Future<Map<String, dynamic>?> loginAndFetchUserData({
     required String email,
     required String password,
