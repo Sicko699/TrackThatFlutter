@@ -39,4 +39,46 @@ class FirebaseService {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>?> registerUser({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // Registrazione
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Prendi l'UID dell'utente registrato
+      String uid = userCredential.user!.uid;
+
+      // Crea un documento utente in Firestore
+      await _firestore.collection('utenti').doc(uid).set({
+        'name': name,
+        'email': email,
+        'uid': uid,
+      });
+
+      // Recupera il documento dell'utente da Firestore
+      DocumentSnapshot userDoc =
+          await _firestore.collection('utenti').doc(uid).get();
+
+      debugPrint('User document data: ${userDoc.data()}');
+      if (userDoc.exists) {
+        return userDoc.data() as Map<String, dynamic>;
+      } else {
+        print('Documento utente non trovato per uid: $uid');
+        return null;
+      }
+    } on FirebaseAuthException catch (e) {
+      print('Errore registrazione: ${e.message}');
+      return null;
+    } catch (e) {
+      print('Errore generico: $e');
+      return null;
+    }
+  }
 }

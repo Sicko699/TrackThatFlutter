@@ -27,10 +27,20 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
   }
 
   @override
-  Future<UserModel> register(String name, String email, String password) {
-    // Implement registration logic here
-    throw UnimplementedError();
+  Future<UserModel> register(String name, String email, String password) async {
+    final data = await authService.register(name, email, password);
+
+    if (data == null || data['id'] == null || data['email'] == null || data['nome'] == null) {
+      throw Exception("Registration failed or incomplete data");
+    }
+
+    return userMapper.fromDTO(UserDTO(
+      id: data['id'],
+      name: data['nome'],
+      email: data['email'],
+    ));
   }
+
 
   @override
   Future<UserModel?> getCurrentUser() {

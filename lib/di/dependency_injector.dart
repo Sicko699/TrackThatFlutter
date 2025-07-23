@@ -10,7 +10,7 @@ import 'package:track_that_flutter/network/service/authService.dart';
 import 'package:track_that_flutter/network/service/impl/authService_impl.dart';
 import 'package:track_that_flutter/repositories/authRepo.dart';
 import 'package:track_that_flutter/repositories/impl/authRepo_impl.dart';
-
+import 'package:track_that_flutter/state_management/cubits/first_cubit/register_cubit.dart';
 import 'package:track_that_flutter/state_management/cubits/first_cubit/login_cubit.dart';
 
 part 'blocs.dart';

@@ -34,8 +34,14 @@ class AuthserviceImpl implements Authservice {
   @override
   Future<Map<String, dynamic>> register(
       String name, String email, String password) {
-    // Implement registration logic here
-    throw UnimplementedError();
+      return _firebaseService
+          .registerUser(name: name, email: email, password: password)
+          .then((userData) {
+        if (userData == null) {
+          throw Exception('Registration failed');
+        }
+        return userData;
+      });
   }
 
   @override

@@ -3,25 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track_that_flutter/model/entities/user.dart';
 import 'package:track_that_flutter/routers/app_router.dart';
-import 'package:track_that_flutter/state_management/cubits/first_cubit/login_cubit.dart';
-import 'package:track_that_flutter/state_management/cubits/first_cubit/login_cubit_state.dart';
+import 'package:track_that_flutter/state_management/cubits/first_cubit/register_cubit.dart';
+import 'package:track_that_flutter/state_management/cubits/first_cubit/register_cubit_state.dart';
 import 'package:track_that_flutter/theme/ColorPalette.dart';
 import 'package:track_that_flutter/theme/Dimensions.dart';
 
 @RoutePage()
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _onLoginTap() {
-    context.read<LoginCubit>().login(
+  void _onRegisterTap() {
+    context.read<RegisterCubit>().register(
+          _nameController.text,
           _emailController.text,
           _passwordController.text,
         );
@@ -29,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -38,18 +41,18 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Register'),
         backgroundColor: ColorPalette.primary,
         foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(Dimensions.paddingMedium),
-        child: BlocConsumer<LoginCubit, LoginCubitState>(
+        child: BlocConsumer<RegisterCubit, RegisterCubitState>(
           listener: (context, state) {
-            if (state is LoginSuccessState) {
-              context.router.push(const WelcomeRoute());
-            } else if (state is LoginErrorState) {
-              // Show an error message if login fails
+            if (state is RegisterSuccessState) {
+              // Dopo la registrazione navighiamo alla pagina di benvenuto
+              context.router.replace(const WelcomeRoute());
+            } else if (state is RegisterErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
               );
@@ -62,20 +65,28 @@ class _LoginPageState extends State<LoginPage> {
               UserModel? user,
               errorMessage,
             ) = switch (state) {
-              LoginLoadingState() => (true, false, null, null),
-              LoginSuccessState(:String message, :UserModel user) => (
+              RegisterLoadingState() => (true, false, null, null),
+              RegisterSuccessState(:String message, :UserModel user) => (
                   false,
                   true,
                   user,
                   null
                 ),
-              LoginErrorState(:String error) => (false, false, null, error),
+              RegisterErrorState(:String error) => (false, false, null, error),
               _ => (false, false, null, null),
             };
 
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 TextField(
                   controller: _emailController,
                   decoration: const InputDecoration(
@@ -97,20 +108,14 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _onLoginTap,
+                    onPressed: _onRegisterTap,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorPalette.primary,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: const Text('Login'),
+                    child: const Text('Register'),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    context.router.push(const RegisterRoute());
-                  },
-                  child: const Text('Non hai un account? Registrati'),
                 ),
                 if (isLoading) ...[
                   const SizedBox(height: 20),
@@ -120,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text('Welcome, ${user?.name}!'),
                 ] else if (errorMessage != null) ...[
                   const SizedBox(height: 20),
-                  Text(errorMessage, style: TextStyle(color: Colors.red)),
+                  Text(errorMessage, style: const TextStyle(color: Colors.red)),
                 ],
               ],
             );

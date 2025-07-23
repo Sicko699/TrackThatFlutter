@@ -6,4 +6,9 @@ final List<BlocProvider> blocs = [
       authRepository: context.read<AuthRepository<UserModel>>(),
     ),
   ),
+  BlocProvider<RegisterCubit>(
+    create: (context) => RegisterCubit(
+      authRepository: context.read<AuthRepository<UserModel>>(),
+    ),
+  ),
 ];
