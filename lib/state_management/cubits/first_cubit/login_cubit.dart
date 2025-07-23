@@ -8,13 +8,12 @@ class LoginCubit extends Cubit<LoginCubitState> {
 
   LoginCubit({required this.authRepository}) : super(LoginInitialState());
 
-  void login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     emit(LoginLoadingState());
 
     try {
-      authRepository.login(email, password).then((user) {
-        emit(LoginSuccessState('Login successful', user));
-      });
+      final user = await authRepository.login(email, password);
+      emit(LoginSuccessState('Login successful', user));
     } catch (e) {
       emit(LoginErrorState('Login failed'));
     }
