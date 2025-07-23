@@ -31,17 +31,20 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
     final data = await authService.register(name, email, password);
     print("Risposta ricevuta dalla register: $data");
 
-    if (data == null || data['uid'] == null || data['email'] == null || data['name'] == null) {
+    if (data == null ||
+        data['uid'] == null ||
+        data['email'] == null ||
+        data['name'] == null) {
       throw Exception("Registration failed or incomplete data");
     }
+    print("Dati ricevuti dalla register: $data");
 
     return userMapper.fromDTO(UserDTO(
-      id: data['id'],
-      name: data['nome'],
+      id: data['uid'],
+      name: data['name'],
       email: data['email'],
     ));
   }
-
 
   @override
   Future<UserModel?> getCurrentUser() {
