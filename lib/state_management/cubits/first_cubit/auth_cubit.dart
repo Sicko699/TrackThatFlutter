@@ -7,6 +7,11 @@ class AuthCubit extends Cubit<AuthCubitState> {
   final AuthRepository<UserModel> authRepository;
   AuthCubit({required this.authRepository}) : super(AuthInitialState());
 
+  /// Manually set the authenticated user without reloading from storage.
+  void setAuthenticatedUser(UserModel user) {
+    emit(AuthAuthenticatedState(user));
+  }
+
   Future<void> checkAuthStatus() async {
     emit(AuthLoadingState());
     try {
