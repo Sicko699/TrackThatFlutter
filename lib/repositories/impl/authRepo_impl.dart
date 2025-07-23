@@ -19,8 +19,7 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
       throw Exception("Login failed");
     }
     UserModel userModel = userMapper.fromDTO(userDto);
-    final prefs = await SharedPreferences.getInstance();
-        try {
+    try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_id', userModel.id);
       await prefs.setString('user_name', userModel.name);
@@ -34,8 +33,7 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
   @override
   Future<void> logout() async {
     await authService.logout();
-    final prefs = await SharedPreferences.getInstance();
-try {
+    try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('user_id');
       await prefs.remove('user_name');
