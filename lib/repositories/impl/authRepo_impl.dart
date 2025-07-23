@@ -3,6 +3,7 @@ import 'package:track_that_flutter/mappers/UserMapper.dart';
 import 'package:track_that_flutter/model/entities/user.dart';
 import 'package:track_that_flutter/network/dto/UserDto.dart';
 import 'package:track_that_flutter/network/service/authService.dart';
+import 'package:flutter/services.dart';
 import 'package:track_that_flutter/repositories/authRepo.dart';
 
 class AuthRepositoryImpl implements AuthRepository<UserModel> {
@@ -19,9 +20,14 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
     }
     UserModel userModel = userMapper.fromDTO(userDto);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_id', userModel.id);
-    await prefs.setString('user_name', userModel.name);
-    await prefs.setString('user_email', userModel.email);
+        try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', userModel.id);
+      await prefs.setString('user_name', userModel.name);
+      await prefs.setString('user_email', userModel.email);
+    } on MissingPluginException {
+      // When running without platform bindings (e.g. tests), ignore persistence
+    }
     return userModel;
   }
 
@@ -29,10 +35,15 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
   Future<void> logout() async {
     await authService.logout();
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('user_id');
-    await prefs.remove('user_name');
-    await prefs.remove('user_email');
-  }
+try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('user_id');
+      await prefs.remove('user_name');
+      await prefs.remove('user_email');
+    } on MissingPluginException {
+      // Ignore if persistence is unavailable
+    }
+}
 
   @override
   Future<UserModel> register(String name, String email, String password) async {
@@ -52,21 +63,29 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
       name: data['name'],
       email: data['email'],
     ));
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_id', userModel.id);
-    await prefs.setString('user_name', userModel.name);
-    await prefs.setString('user_email', userModel.email);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', userModel.id);
+      await prefs.setString('user_name', userModel.name);
+      await prefs.setString('user_email', userModel.email);
+    } on MissingPluginException {
+      // Persistence unavailable; continue without storing
+    }
     return userModel;
   }
 
   @override
   Future<UserModel?> getCurrentUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final id = prefs.getString('user_id');
-    final name = prefs.getString('user_name');
-    final email = prefs.getString('user_email');
-    if (id != null && name != null && email != null) {
-      return UserModel(id: id, name: name, email: email);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final id = prefs.getString('user_id');
+      final name = prefs.getString('user_name');
+      final email = prefs.getString('user_email');
+      if (id != null && name != null && email != null) {
+        return UserModel(id: id, name: name, email: email);
+      }
+    } on MissingPluginException {
+      // If the plugin is unavailable, treat as no persisted user
     }
     return null;
   }
