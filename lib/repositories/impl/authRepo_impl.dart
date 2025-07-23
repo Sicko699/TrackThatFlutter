@@ -29,7 +29,8 @@ class AuthRepositoryImpl implements AuthRepository<UserModel> {
   @override
   Future<UserModel> register(String name, String email, String password) async {
     final data = await authService.register(name, email, password);
-
+    print("Risposta ricevuta dalla register: $data");
+    
     if (data == null || data['id'] == null || data['email'] == null || data['nome'] == null) {
       throw Exception("Registration failed or incomplete data");
     }
