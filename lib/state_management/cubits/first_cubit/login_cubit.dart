@@ -19,4 +19,8 @@ class LoginCubit extends Cubit<LoginCubitState> {
       emit(LoginErrorState('Login failed'));
     }
   }
+
+  void updateUser(UserModel user) {
+    emit(LoginSuccessState('User updated successfully', user));
+  }
 }
