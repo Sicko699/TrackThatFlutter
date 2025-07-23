@@ -26,9 +26,8 @@ class AuthserviceImpl implements Authservice {
   }
 
   @override
-  Future<void> logout() {
-    // Implement logout logic here
-    throw UnimplementedError();
+  Future<void> logout() async {
+    await _firebaseService.signOut();
   }
 
   @override
@@ -45,8 +44,7 @@ class AuthserviceImpl implements Authservice {
   }
 
   @override
-  Future<Map<String, dynamic>?> getCurrentUser() {
-    // Implement logic to get current user here
-    throw UnimplementedError();
+  Future<Map<String, dynamic>?> getCurrentUser() async {
+    return _firebaseService.getCurrentUserData();
   }
 }
