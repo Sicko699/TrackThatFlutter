@@ -5,6 +5,7 @@ import 'package:track_that_flutter/routers/app_router.dart';
 import 'package:track_that_flutter/state_management/cubits/first_cubit/auth_cubit_state.dart';
 import 'package:track_that_flutter/theme/AppTheme.dart';
 import 'package:track_that_flutter/state_management/cubits/first_cubit/auth_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,15 +20,15 @@ class TrackThatFlutterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final appRouter = AppRouter();
+    final appRouter = AppRouter();
 
     return DependencyInjector(
-      child: BlocListener<AuthCubit, AuthState>(
+      child: BlocListener<AuthCubit, AuthCubitState>(
         listener: (context, state) {
           if (state is AuthAuthenticatedState) {
-            _router.replaceAll([const WelcomeRoute()]);
+            appRouter.replaceAll([const WelcomeRoute()]);
           } else if (state is AuthUnauthenticatedState) {
-            _router.replaceAll([const LoginRoute()]);
+            appRouter.replaceAll([const LoginRoute()]);
           }
         },
         child: MaterialApp.router(
@@ -35,7 +36,7 @@ class TrackThatFlutterApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,
-          routerConfig: _router.config(),
+          routerConfig: appRouter.config(),
         ),
       ),
     );
