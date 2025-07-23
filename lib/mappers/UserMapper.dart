@@ -7,7 +7,9 @@ class Usermapper implements DTOMapper<UserDTO, UserModel> {
   UserModel fromDTO(UserDTO dto) {
     return UserModel(
       id: dto.id,
-      name: dto.name,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      dateOfBirth: dto.dateOfBirth,
       email: dto.email,
     );
   }
@@ -16,7 +18,9 @@ class Usermapper implements DTOMapper<UserDTO, UserModel> {
   UserDTO toDTO(UserModel model) {
     return UserDTO(
       id: model.id,
-      name: model.name,
+      firstName: model.firstName,
+      lastName: model.lastName,
+      dateOfBirth: model.dateOfBirth,
       email: model.email,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:track_that_flutter/network/dto/UserDto.dart';
 import 'package:track_that_flutter/network/firebase_service.dart';
 import 'package:track_that_flutter/network/service/authService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthserviceImpl implements Authservice {
   final FirebaseService _firebaseService;
@@ -18,8 +19,10 @@ class AuthserviceImpl implements Authservice {
 
     UserDTO userDto = UserDTO(
       email: email,
-      id: userData['id'],
-      name: userData['nome'],
+      id: userData['uid'],
+      firstName: userData['firstName'],
+      lastName: userData['lastName'],
+      dateOfBirth: (userData['dateOfBirth'] as Timestamp).toDate(),
     );
 
     return userDto;
@@ -32,15 +35,24 @@ class AuthserviceImpl implements Authservice {
 
   @override
   Future<Map<String, dynamic>> register(
-      String name, String email, String password) {
-      return _firebaseService
-          .registerUser(name: name, email: email, password: password)
-          .then((userData) {
-        if (userData == null) {
-          throw Exception('Registration failed');
-        }
-        return userData;
-      });
+      String firstName,
+      String lastName,
+      DateTime dateOfBirth,
+      String email,
+      String password) {
+    return _firebaseService
+        .registerUser(
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: dateOfBirth,
+            email: email,
+            password: password)
+        .then((userData) {
+      if (userData == null) {
+        throw Exception('Registration failed');
+      }
+      return userData;
+    });
   }
 
   @override
