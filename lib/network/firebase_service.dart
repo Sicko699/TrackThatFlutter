@@ -55,7 +55,9 @@ class FirebaseService {
   }
 
   Future<Map<String, dynamic>?> registerUser({
-    required String name,
+    required String firstName,
+    required String lastName,
+    required DateTime dateOfBirth,
     required String email,
     required String password,
   }) async {
@@ -71,7 +73,9 @@ class FirebaseService {
 
       // Crea un documento utente in Firestore
       await _firestore.collection('utenti').doc(uid).set({
-        'name': name,
+        'firstName': firstName,
+        'lastName': lastName,
+        'dateOfBirth': Timestamp.fromDate(dateOfBirth),
         'email': email,
         'uid': uid,
       });

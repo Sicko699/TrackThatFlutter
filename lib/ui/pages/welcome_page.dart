@@ -13,7 +13,7 @@ class WelcomePage extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginCubitState>(
       builder: (BuildContext context, state) {
         if (state is LoginSuccessState) {
-          final userName = state.user.name;
+          final userName = state.user.firstName;
 
           return Scaffold(
             appBar: AppBar(

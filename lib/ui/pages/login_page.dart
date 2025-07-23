@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                   const CircularProgressIndicator(),
                 ] else if (isSuccess) ...[
                   const SizedBox(height: 20),
-                  Text('Welcome, ${user?.name}!'),
+                  Text('Welcome, ${user?.firstName}!'),
                 ] else if (errorMessage != null) ...[
                   const SizedBox(height: 20),
                   Text(errorMessage, style: TextStyle(color: Colors.red)),

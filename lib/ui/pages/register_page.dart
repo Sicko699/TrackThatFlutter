@@ -9,6 +9,7 @@ import 'package:track_that_flutter/state_management/cubits/first_cubit/register_
 import 'package:track_that_flutter/state_management/cubits/first_cubit/register_cubit_state.dart';
 import 'package:track_that_flutter/theme/ColorPalette.dart';
 import 'package:track_that_flutter/theme/Dimensions.dart';
+import 'package:track_that_flutter/ui/widgets/date_picker_field.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {
@@ -19,13 +20,25 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  DateTime? _birthDate;
 
   void _onRegisterTap() {
+    if (_passwordController.text != _confirmPasswordController.text ||
+        _birthDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Controlla i dati inseriti')),
+      );
+      return;
+    }
     context.read<RegisterCubit>().register(
-          _nameController.text,
+          _firstNameController.text,
+          _lastNameController.text,
+          _birthDate!,
           _emailController.text,
           _passwordController.text,
         );
@@ -33,9 +46,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -83,11 +98,24 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
-                  controller: _nameController,
+                  controller: _firstNameController,
                   decoration: const InputDecoration(
-                    labelText: 'Name',
+                    labelText: 'Nome',
                     border: OutlineInputBorder(),
                   ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _lastNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Cognome',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                DatePickerField(
+                  label: 'Data di nascita',
+                  onDateSelected: (d) => _birthDate = d,
                 ),
                 const SizedBox(height: 20),
                 TextField(
@@ -103,6 +131,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _confirmPasswordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Conferma Password',
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -125,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const CircularProgressIndicator(),
                 ] else if (isSuccess) ...[
                   const SizedBox(height: 20),
-                  Text('Welcome, ${user?.name}!'),
+                  Text('Welcome, ${user?.firstName}!'),
                 ] else if (errorMessage != null) ...[
                   const SizedBox(height: 20),
                   Text(errorMessage, style: const TextStyle(color: Colors.red)),

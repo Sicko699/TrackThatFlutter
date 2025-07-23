@@ -8,13 +8,17 @@ abstract class Authservice extends BaseService {
   Future<void> logout();
 
   Future<Map<String, dynamic>> register(
-    String name,
+    String firstName,
+    String lastName,
+    DateTime dateOfBirth,
     String email,
     String password,
   ) async {
     final firebaseService = FirebaseService();
     final userData = await firebaseService.registerUser(
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
       email: email,
       password: password,
     );
@@ -23,6 +27,6 @@ abstract class Authservice extends BaseService {
     }
     return userData;
   }
-  
+
   Future<Map<String, dynamic>?> getCurrentUser();
 }
