@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track_that_flutter/model/entities/user.dart';
 import 'package:track_that_flutter/routers/app_router.dart';
+import 'package:track_that_flutter/state_management/cubits/first_cubit/auth_cubit.dart';
 import 'package:track_that_flutter/state_management/cubits/first_cubit/login_cubit.dart';
 import 'package:track_that_flutter/state_management/cubits/first_cubit/register_cubit.dart';
 import 'package:track_that_flutter/state_management/cubits/first_cubit/register_cubit_state.dart';
@@ -51,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: BlocConsumer<RegisterCubit, RegisterCubitState>(
           listener: (context, state) {
             if (state is RegisterSuccessState) {
+              context.read<AuthCubit>().checkAuthStatus();
               context.router.push(const WelcomeRoute());
               context.read<LoginCubit>().updateUser(state.user);
             } else if (state is RegisterErrorState) {
